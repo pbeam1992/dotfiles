@@ -25,8 +25,17 @@ fresh machine. The repo is **public**: never commit secrets, private keys or tok
   `home/run_onchange_after_install-packages.sh.tmpl` embeds the Brewfile's hash and runs
   `brew bundle` against it, so `chezmoi apply` installs packages whenever the Brewfile changes.
   To add an app, edit `Brewfile` only.
-- The remote fetches over HTTPS and pushes over SSH (`init.bash` sets the push URL). Pushing uses
-  the 1Password SSH agent.
+- `home/run_onchange_after_macos-defaults.sh` sets macOS preferences with `defaults write` and
+  rebuilds the Dock's pinned apps. Its name must keep sorting after `install-packages`, because
+  chezmoi runs scripts alphabetically and the Dock pins need the apps installed first. It can be
+  run directly with `/bin/bash` to test, but it changes the current machine's settings.
+- The remote fetches over HTTPS and pushes over SSH (`init.bash` sets the push URL and adds
+  GitHub's pinned host key to `known_hosts`). Pushing uses the 1Password SSH agent.
+- Commits are SSH-signed through 1Password (`home/private_dot_gitconfig`), so `git commit` waits
+  for the user to approve a 1Password prompt.
+- `chezmoi apply` and `init.bash` both run `brew bundle` and the macOS preferences script when
+  those have changed. Do not run them just to test an unrelated edit; use `chezmoi diff` or
+  `chezmoi execute-template` instead.
 
 ## Constraints on `init.bash`
 
