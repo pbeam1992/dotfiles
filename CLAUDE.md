@@ -1,0 +1,58 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## What this repo is
+
+Personal macOS dotfiles managed with [chezmoi](https://www.chezmoi.io), plus a bootstrap script for a
+fresh machine. The repo is **public**: never commit secrets, private keys or tokens.
+
+## Layout and how the pieces fit
+
+- `init.bash` is the fresh-machine bootstrap. It is fetched with `curl` and run via
+  `bash -c "$(curl ...)"` (see `README.md`), so it runs *before* the repo, git, Homebrew or chezmoi
+  exist. It installs Homebrew, clones this repo, installs chezmoi, asks for confirmation, then runs
+  `chezmoi init --source <repo> --apply`.
+- `.chezmoiroot` contains `home`, so the chezmoi source state is `home/`, not the repo root.
+  Anything that should land in `$HOME` goes under `home/` using chezmoi naming (`dot_zshrc`,
+  `private_dot_ssh/`, `run_onchange_*.sh`, `*.tmpl`). Files at the repo root (`README.md`,
+  `init.bash`, this file) are never applied to `$HOME`.
+- `home/.chezmoi.toml.tmpl` is the chezmoi config template. It sets `sourceDir` to
+  `.chezmoi.workingTree` (the repo root), which is what lets chezmoi work from
+  `~/Repositories/github.com/pbeam1992/dotfiles` instead of its default `~/.local/share/chezmoi`.
+  Changes to it only take effect after `chezmoi init` is run again.
+- The remote fetches over HTTPS and pushes over SSH (`init.bash` sets the push URL). Pushing uses
+  the 1Password SSH agent.
+
+## Constraints on `init.bash`
+
+- Must run on the stock macOS `/bin/bash` (3.2): no associative arrays, `mapfile`, `${var,,}`, etc.
+- No dependencies beyond what a fresh macOS ships. Do not use `gum`, `jq`, or anything from
+  Homebrew for the UI or logic.
+- Must stay idempotent: every step detects "already done" and skips.
+- Must work both when executed as a file and when passed as a string to `bash -c` (no reliance on
+  `$0` or the script's own path). `main` is guarded so the file can be sourced to test helpers.
+- Steps that may need input (Homebrew installer, `chezmoi init --apply`) go through `run_visible`;
+  silent steps go through `run_quiet`, which logs to a temp file and shows a spinner. The prompt
+  reads from `/dev/tty`, not stdin.
+- Colours and the spinner are disabled when stdout is not a terminal or `NO_COLOR` is set.
+- The README one-liner fetches `init.bash` from `main` on GitHub, so changes are only live for
+  fresh machines once pushed.
+
+## Commands
+
+```sh
+/bin/bash -n init.bash                 # syntax check with the macOS system bash
+shellcheck init.bash                   # lint (not installed by default: brew install shellcheck)
+DOTFILES_ASSUME_YES=1 ./init.bash      # run end to end without the confirmation prompt
+./init.bash </dev/null                 # exercise the "declined" path (no tty answer)
+
+chezmoi diff                           # preview what apply would change in $HOME
+chezmoi apply                          # apply home/ to $HOME
+chezmoi add ~/.somefile                # start managing a file (copies it into home/)
+chezmoi execute-template < home/.chezmoi.toml.tmpl   # render a template to check it
+chezmoi doctor                         # sanity-check the chezmoi setup
+```
+
+There is no test suite. To see the spinner and colours, run the script inside a pseudo-terminal;
+the already-installed paths are the only ones exercised on a machine that is set up.
