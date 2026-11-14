@@ -1,7 +1,9 @@
 {{- /* chezmoi:modify-template */ -}}
-{{- /* Herdr writes to this file too, so only the terminal font is set here. */ -}}
+{{- /* Herdr writes to this file too, so only the terminal font and the theme are set here. */ -}}
 {{- $settings := dict -}}
 {{- if .chezmoi.stdin | trim -}}
 {{-   $settings = fromJson .chezmoi.stdin -}}
 {{- end -}}
-{{ setValueAtPath "font" "IosevkaTerm Nerd Font Mono" $settings | toPrettyJson }}
+{{- $settings = setValueAtPath "font" "IosevkaTerm Nerd Font Mono" $settings -}}
+{{- $settings = setValueAtPath "theme" "gruvbox-dark-hard" $settings -}}
+{{ $settings | toPrettyJson }}
