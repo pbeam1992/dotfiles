@@ -18,6 +18,10 @@ SSH_URL="git@github.com:${GITHUB_USER}/${REPO_NAME}.git"
 DOTFILES_DIR="${HOME}/Repositories/github.com/${GITHUB_USER}/${REPO_NAME}"
 DOTFILES_DIR_SHORT="~${DOTFILES_DIR#"${HOME}"}"
 
+# GitHub's published ed25519 host key (fingerprint SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU).
+# https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints
+GITHUB_HOST_KEY="github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl"
+
 TOTAL_STEPS=4
 STEP=0
 LOG=""
@@ -174,6 +178,22 @@ step_repository() {
   # Fetch stays on HTTPS (no key needed for a public repo); pushes go over SSH.
   git -C "${DOTFILES_DIR}" remote set-url --push origin "${SSH_URL}"
   ok "Fetch over HTTPS, push over SSH"
+  trust_github_host
+}
+
+# Without GitHub's host key in known_hosts, the first SSH push fails with
+# "Host key verification failed". The key is pinned above rather than fetched.
+trust_github_host() {
+  local known_hosts="${HOME}/.ssh/known_hosts"
+  if ssh-keygen -F github.com -f "${known_hosts}" >/dev/null 2>&1; then
+    ok "GitHub's SSH host key already trusted"
+    return
+  fi
+  mkdir -p "${HOME}/.ssh"
+  chmod 700 "${HOME}/.ssh"
+  printf '%s\n' "${GITHUB_HOST_KEY}" >>"${known_hosts}"
+  chmod 600 "${known_hosts}"
+  ok "Added GitHub's SSH host key to known_hosts"
 }
 
 step_chezmoi() {

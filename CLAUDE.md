@@ -21,6 +21,10 @@ fresh machine. The repo is **public**: never commit secrets, private keys or tok
   `.chezmoi.workingTree` (the repo root), which is what lets chezmoi work from
   `~/Repositories/github.com/pbeam1992/dotfiles` instead of its default `~/.local/share/chezmoi`.
   Changes to it only take effect after `chezmoi init` is run again.
+- `Brewfile` lives at the repo root, not under `home/`, so it is not copied to `$HOME`.
+  `home/run_onchange_after_install-packages.sh.tmpl` embeds the Brewfile's hash and runs
+  `brew bundle` against it, so `chezmoi apply` installs packages whenever the Brewfile changes.
+  To add an app, edit `Brewfile` only.
 - The remote fetches over HTTPS and pushes over SSH (`init.bash` sets the push URL). Pushing uses
   the 1Password SSH agent.
 

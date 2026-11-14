@@ -15,9 +15,13 @@ The script:
 1. Installs [Homebrew](https://brew.sh), which also installs the Xcode Command Line Tools (git).
 2. Clones this repo to `~/Repositories/github.com/pbeam1992/dotfiles` over HTTPS, so no SSH key is needed.
 3. Installs chezmoi.
-4. Asks for confirmation, then runs `chezmoi init --apply`.
+4. Asks for confirmation, then runs `chezmoi init --apply`, which writes the dotfiles and
+   installs the apps in the `Brewfile`.
 
 It is safe to re-run; finished steps are skipped.
+
+Afterwards, open 1Password, sign in, and turn on the SSH agent under Settings → Developer.
+Git pushes and commit signing both go through it.
 
 If the repo is already cloned, run it directly instead:
 
@@ -35,6 +39,7 @@ to GitHub before your first push from a new machine.
 | Path        | Purpose                                                        |
 | ----------- | -------------------------------------------------------------- |
 | `init.bash` | Bootstrap script for a fresh machine                           |
+| `Brewfile`  | Apps and tools; installed by `brew bundle` when it changes     |
 | `home/`     | chezmoi source state; everything here maps to `$HOME`          |
 
 ## Daily use

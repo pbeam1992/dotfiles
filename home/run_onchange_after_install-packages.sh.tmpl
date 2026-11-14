@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# Installs everything in the repo's Brewfile. chezmoi re-runs this script whenever its
+# rendered content changes, and the hash below changes whenever the Brewfile does.
+#
+# Brewfile hash: {{ include (joinPath .chezmoi.workingTree "Brewfile") | sha256sum }}
+
+set -euo pipefail
+
+# brew is not on PATH in every context (e.g. a shell without ~/.zprofile loaded).
+for prefix in /opt/homebrew /usr/local; do
+  if [[ -x "${prefix}/bin/brew" ]]; then
+    eval "$("${prefix}/bin/brew" shellenv)"
+    break
+  fi
+done
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "error: Homebrew is not installed; run init.bash first" >&2
+  exit 1
+fi
+
+echo "Installing packages from the Brewfile..."
+brew bundle --file={{ joinPath .chezmoi.workingTree "Brewfile" | quote }}
