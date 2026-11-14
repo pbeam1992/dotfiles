@@ -29,6 +29,12 @@ fresh machine. The repo is **public**: never commit secrets, private keys or tok
   rebuilds the Dock's pinned apps. Its name must keep sorting after `install-packages`, because
   chezmoi runs scripts alphabetically and the Dock pins need the apps installed first. It can be
   run directly with `/bin/bash` to test, but it changes the current machine's settings.
+- `home/dot_zshrc` sources the Homebrew-installed zsh plugins and Starship. Each is guarded,
+  because chezmoi writes `~/.zshrc` before `brew bundle` has installed them, and
+  `zsh-syntax-highlighting` must stay last.
+- `home/dot_config/herdr-app/modify_settings.json` is a chezmoi modify-template, not a plain
+  file, because the Herdr app writes to the same `settings.json`. It sets only the `font` key.
+  It must not have a `.tmpl` suffix, or `.chezmoi.stdin` is unavailable.
 - The remote fetches over HTTPS and pushes over SSH (`init.bash` sets the push URL and adds
   GitHub's pinned host key to `known_hosts`). Pushing uses the 1Password SSH agent.
 - Commits are SSH-signed through 1Password (`home/private_dot_gitconfig`), so `git commit` waits
