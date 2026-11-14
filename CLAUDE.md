@@ -32,6 +32,11 @@ fresh machine. The repo is **public**: never commit secrets, private keys or tok
 - `home/dot_zshrc` sources the Homebrew-installed zsh plugins and Starship. Each is guarded,
   because chezmoi writes `~/.zshrc` before `brew bundle` has installed them, and
   `zsh-syntax-highlighting` must stay last.
+- There is deliberately no `starship.toml`. Starship's default prompt uses the terminal's ANSI
+  colours, so it follows whatever theme Herdr shows. Before adding a Starship config with fixed
+  hex colours (including presets such as `gruvbox-rainbow`, which was tried and rejected), warn
+  the user that the prompt would stop following the Herdr theme and clash after a theme change.
+  The same applies to any other tool that currently inherits the terminal's colours.
 - `home/dot_config/herdr-app/modify_settings.json` is a chezmoi modify-template, not a plain
   file, because the Herdr app writes to the same `settings.json`. It sets only the `font` and
   `theme` keys. It must not have a `.tmpl` suffix, or `.chezmoi.stdin` is unavailable.
