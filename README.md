@@ -18,7 +18,7 @@ The script:
 3. Installs chezmoi.
 4. Asks for confirmation, then runs `chezmoi init --apply`, which:
    - writes the dotfiles (`~/.gitconfig`, `~/.ssh/config`, `~/.zprofile`, `~/.zshrc`) and sets
-     the Herdr terminal font,
+     the Herdr terminal font and theme,
    - installs the apps in the `Brewfile`,
    - applies the macOS preferences and sets up the Dock.
 
@@ -48,7 +48,8 @@ If the repo is already cloned, run it directly instead:
 | `home/private_dot_ssh/private_config`              | Points SSH at the 1Password agent                          |
 | `home/dot_zprofile`                                | Puts Homebrew on `PATH`                                    |
 | `home/dot_zshrc`                                   | Starship prompt, autosuggestions and syntax highlighting   |
-| `home/dot_config/herdr-app/modify_settings.json`   | Sets the Herdr terminal font, keeping its other settings   |
+| `home/dot_config/herdr-app/modify_settings.json`   | Sets the Herdr font and theme, keeping its other settings  |
+| `home/dot_config/herdr-app/themes/`                | Gruvbox Dark Hard theme for Herdr                          |
 | `home/run_onchange_after_install-packages.sh.tmpl` | Runs `brew bundle` whenever the `Brewfile` changes         |
 | `home/run_onchange_after_macos-defaults.sh`        | macOS preferences and Dock apps; re-runs when it changes   |
 
