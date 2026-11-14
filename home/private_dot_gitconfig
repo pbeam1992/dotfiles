@@ -1,0 +1,10 @@
+[user]
+	email = patompong.beam@gmail.com
+	name = Patompong Sulsaksakul
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEc4SrXWCxs1uqMbEd5MJUn1q8mYBRamueJlPLWpfEQy
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+[commit]
+	gpgsign = true
