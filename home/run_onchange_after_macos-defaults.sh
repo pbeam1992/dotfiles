@@ -63,7 +63,10 @@ defaults -currentHost write com.apple.controlcenter BatteryShowPercentage -bool 
 
 # --- Dock --------------------------------------------------------------------------------
 
-defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock autohide -bool false
+defaults write com.apple.dock tilesize -int 26  # small, but notification badge counts stay readable
+defaults write com.apple.dock magnification -bool true
+defaults write com.apple.dock largesize -int 64   # icon size under the pointer
 defaults write com.apple.dock orientation -string "right"
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock mru-spaces -bool false   # keep Spaces in a fixed order
