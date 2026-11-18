@@ -1,9 +1,11 @@
 {{- /* chezmoi:modify-template */ -}}
-{{- /* Herdr writes to this file too, so only the terminal font and the theme are set here. */ -}}
+{{- /* Herdr writes to this file too, so only the terminal font, its size and the theme are set here. */ -}}
 {{- $settings := dict -}}
 {{- if .chezmoi.stdin | trim -}}
 {{-   $settings = fromJson .chezmoi.stdin -}}
 {{- end -}}
 {{- $settings = setValueAtPath "font" "IosevkaTerm Nerd Font Mono" $settings -}}
+{{- /* Herdr's default terminal font size is 14. */ -}}
+{{- $settings = setValueAtPath "font_size" 15 $settings -}}
 {{- $settings = setValueAtPath "theme" "gruvbox-dark-hard" $settings -}}
 {{ $settings | toPrettyJson }}

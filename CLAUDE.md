@@ -38,8 +38,8 @@ fresh machine. The repo is **public**: never commit secrets, private keys or tok
   the user that the prompt would stop following the Herdr theme and clash after a theme change.
   The same applies to any other tool that currently inherits the terminal's colours.
 - `home/dot_config/herdr-app/modify_settings.json` is a chezmoi modify-template, not a plain
-  file, because the Herdr app writes to the same `settings.json`. It sets only the `font` and
-  `theme` keys. It must not have a `.tmpl` suffix, or `.chezmoi.stdin` is unavailable.
+  file, because the Herdr app writes to the same `settings.json`. It sets only the `font`,
+  `font_size` and `theme` keys. It must not have a `.tmpl` suffix, or `.chezmoi.stdin` is unavailable.
 - `home/dot_config/herdr-app/themes/gruvbox-dark-hard.json` is the Herdr theme that `theme`
   names. The `themes` directory must not be `exact_`, because Herdr ships its own themes there.
 - The remote fetches over HTTPS and pushes over SSH (`init.bash` sets the push URL and adds
