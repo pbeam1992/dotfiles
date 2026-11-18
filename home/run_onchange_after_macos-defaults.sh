@@ -29,6 +29,11 @@ defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false
 # Fastest tracking speed.
 defaults write NSGlobalDomain com.apple.trackpad.scaling -float 3
 
+# Light click pressure (0 light, 1 medium, 2 firm). The second key is the Force Click
+# threshold, which System Settings moves together with the first.
+defaults write com.apple.AppleMultitouchTrackpad FirstClickThreshold -int 0
+defaults write com.apple.AppleMultitouchTrackpad SecondClickThreshold -int 0
+
 # Light by day, dark by night.
 defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool true
 
