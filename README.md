@@ -36,6 +36,12 @@ If the repo is already cloned, run it directly instead:
 1. Open 1Password, sign in, and turn on the SSH agent under Settings → Developer. Git pushes
    and commit signing both go through it, so neither works until this is done.
 2. Log out and back in so the keyboard and trackpad preferences take effect.
+3. Install LINE from the App Store (it has no Homebrew cask), then pin it to the Dock by
+   re-running the preferences script:
+
+   ```sh
+   /bin/bash ~/Repositories/github.com/pbeam1992/dotfiles/home/run_onchange_after_macos-defaults.sh
+   ```
 
 ## What is managed
 

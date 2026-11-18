@@ -74,12 +74,15 @@ defaults write com.apple.dock mru-spaces -bool false   # keep Spaces in a fixed 
 # Pinned apps, in order. Finder is always first and cannot be removed, so it is not listed.
 # For each entry the first path that exists is used; an app that is not installed is skipped.
 dock_apps=(
-  "/Applications/Google Chrome.app"
-  "/Applications/Herdr.app:${HOME}/Applications/Herdr.app"
-  "/System/Applications/System Settings.app"
   "/System/Applications/Reminders.app"
+  "/Applications/LINE.app"
+  "/Applications/Slack.app"
+  "/Applications/Google Chrome.app"
+  "/Applications/Claude.app"
+  "/Applications/Herdr.app:${HOME}/Applications/Herdr.app"
   "/System/Applications/Music.app"
   "/System/Applications/iPhone Mirroring.app"
+  "/System/Applications/System Settings.app"
 )
 
 defaults write com.apple.dock persistent-apps -array
