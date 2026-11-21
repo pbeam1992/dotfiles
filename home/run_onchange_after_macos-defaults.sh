@@ -80,6 +80,7 @@ defaults write com.apple.dock mru-spaces -bool false   # keep Spaces in a fixed 
 # For each entry the first path that exists is used; an app that is not installed is skipped.
 dock_apps=(
   "/System/Applications/Reminders.app"
+  "/Applications/Obsidian.app"
   "/Applications/LINE.app"
   "/Applications/Slack.app"
   "/Applications/Google Chrome.app"
